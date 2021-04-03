@@ -38,6 +38,9 @@ tf.flags.DEFINE_integer("number_of_steps", 1000000, "Number of training steps.")
 tf.flags.DEFINE_integer("log_every_n_steps", 1,
                         "Frequency at which loss and global step are logged.")
 
+# update 2021.4.2
+tf.flags.DEFINE_float("emb_loss_factor", 1.0, "weight of vse")
+
 tf.logging.set_verbosity(tf.logging.INFO)
 
 
@@ -48,6 +51,9 @@ def main(unused_argv):
   model_config = configuration.ModelConfig()
   model_config.input_file_pattern = FLAGS.input_file_pattern
   model_config.inception_checkpoint_file = FLAGS.inception_checkpoint_file
+  
+  #update 2021.4.2
+  model_config.emb_loss_factor = FLAGS.emb_loss_factor
 
   training_config = configuration.TrainingConfig()
 
@@ -94,6 +100,8 @@ def main(unused_argv):
 
     # Set up the Saver for saving and restoring model checkpoints.
     saver = tf.train.Saver(max_to_keep=training_config.max_checkpoints_to_keep)
+    # update 2021.4.3
+    # g.finalize()
 
   # Run training.
   tf.contrib.slim.learning.train(

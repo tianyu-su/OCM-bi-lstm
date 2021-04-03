@@ -7,12 +7,13 @@ INCEPTION_CHECKPOINT="model/inception_v3.ckpt"
 MODEL_DIR="model/bi_lstm/"
 
 # Run the training code.
-python polyvore/train.py \
+CUDA_VISIBLE_DEVICES=0 python -u polyvore/train.py \
   --input_file_pattern="data/tf_records/train-no-dup-?????-of-00128" \
   --inception_checkpoint_file="${INCEPTION_CHECKPOINT}" \
   --train_dir="${MODEL_DIR}/train" \
   --train_inception=true \
-  --number_of_steps=100000
+  --number_of_steps=100000 \
+  --emb_loss_factor=1.0 > local_logs/vse.log 2>&1
 
 
 # # Training Siamese Network

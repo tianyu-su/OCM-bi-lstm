@@ -24,10 +24,9 @@
 *.tar
 *.zip
 *~
-
+.idea
 .gitlab
 .github
-data/label/*
 data/tf_records/*
 model/*
 
@@ -48,3 +47,4 @@ model/*
 .Trashes
 ehthumbs.db
 Thumbs.db
+/data/tf_records/

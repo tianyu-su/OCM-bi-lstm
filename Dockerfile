@@ -17,21 +17,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+# RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+RUN curl -O https://bootstrap.pypa.io/pip/2.7/get-pip.py && \
     python get-pip.py && \
     rm get-pip.py
 
 RUN pip --no-cache-dir install \
-        ipykernel \
-        jupyter \
+        # ipykernel \
+        # jupyter \
         matplotlib \
         numpy \
         scipy \
 		scikit-learn \
-        && \
-    python -m ipykernel.kernelspec
+        # && \
+    # python -m ipykernel.kernelspec
 
-ENV TENSORFLOW_VERSION 0.11.0
+# ENV TENSORFLOW_VERSION 0.11.0
 
 # --- DO NOT EDIT OR DELETE BETWEEN THE LINES --- #
 # These lines will be edited automatically by parameterized_docker_build.sh. #
@@ -41,7 +42,8 @@ ENV TENSORFLOW_VERSION 0.11.0
 
 # Install TensorFlow GPU version.
 RUN pip --no-cache-dir install \
-    http://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl
+    # http://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl
+    http://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl
 # --- ~ DO NOT EDIT OR DELETE BETWEEN THE LINES --- #
 
 # TensorBoard
