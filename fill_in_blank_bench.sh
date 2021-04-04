@@ -10,7 +10,7 @@ CHECKPOINT_DIR=$3
 test_logs=test_results/${WHICH_SPLIT}/logs
 test_results_file=test_results/${WHICH_SPLIT}
 
-mkdir -p test_logs
+mkdir -p ${test_logs}
 CUDA_VISIBLE_DEVICES=${gpuid} python -u polyvore/fill_in_blank.py \
   --checkpoint_path=${CHECKPOINT_DIR} \
   --json_file data/benchmark_dataset/label/${WHICH_SPLIT}/fill_in_blank_test.json \

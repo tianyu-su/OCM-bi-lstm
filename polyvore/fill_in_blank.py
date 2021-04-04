@@ -176,6 +176,8 @@ def run_question_inference(sess, question, test_ids, test_feat,
 
 
 def main(_):
+    sess_config = tf.ConfigProto()
+    sess_config.gpu_options.allow_growth = True
     # Build the inference graph.
     top_k = 4  # Print the top_k accuracy.
     true_pred = np.zeros(top_k)
@@ -202,13 +204,14 @@ def main(_):
         saver = tf.train.Saver()
 
         g.finalize()
-        with tf.Session() as sess:
+        with tf.Session(config=sess_config) as sess:
             saver.restore(sess, FLAGS.checkpoint_path)
             questions = json.load(open(FLAGS.json_file))
 
             all_pred = []
             set_ids = []
             all_scores = []
+            print("====> test set: %d" % (len(questions)))
             for question in questions:
                 score, pred = run_question_inference(sess, question, test_ids,
                                                      test_feat, test_rnn_feat,

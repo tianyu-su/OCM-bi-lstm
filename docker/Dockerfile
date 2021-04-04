@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync \
         software-properties-common \
         unzip \
+        vim \
+        tmux \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -49,7 +51,7 @@ RUN pip --no-cache-dir install \
 # TensorBoard
 EXPOSE 6006
 # IPython
-EXPOSE 8888
+#EXPOSE 8888
 
 WORKDIR "/root"
 

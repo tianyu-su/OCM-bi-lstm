@@ -46,6 +46,8 @@ tf.flags.DEFINE_string("setid2id_mapping_file", "data/features/test_features.pkl
 
 
 def main(_):
+    sess_config = tf.ConfigProto()
+    sess_config.gpu_options.allow_growth = True
     if os.path.isfile(FLAGS.feature_file):
         print("Feature file already exist.")
         return
@@ -59,7 +61,7 @@ def main(_):
         saver = tf.train.Saver()
 
     g.finalize()
-    sess = tf.Session(graph=g)
+    sess = tf.Session(graph=g, config=sess_config)
     saver.restore(sess, FLAGS.checkpoint_path)
     test_json = json.load(open(FLAGS.json_file))
     setid2id_mappping = json.load(open(FLAGS.setid2id_mapping_file))

@@ -10,8 +10,8 @@ import json
 
 file_types = ['train', 'valid', 'test']
 # fn_path = "../../label/{}_no_dup.json"
-# fn_path = "../label/disjoint/{}_no_dup.json"
-fn_path = "../label/nondisjoint/{}_no_dup.json"
+fn_path = "../label/disjoint/{}_no_dup.json"
+# fn_path = "../label/nondisjoint/{}_no_dup.json"
 
 all_sentences = set()
 for fyp in file_types:

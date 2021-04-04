@@ -45,6 +45,7 @@ tf.flags.DEFINE_integer("direction", 2, "2: bidirectional; 1: forward only;"
 
 def run_question_inference(sess, question, test_ids, test_feat,
                            test_rnn_feat, num_lstm_units):
+    # pdb.set_trace()
     question_ids = []
     answer_ids = []
     for q in question["question"]:
@@ -80,6 +81,7 @@ def run_question_inference(sess, question, test_ids, test_feat,
     else:
         zero_state = np.zeros([1, num_lstm_units])
 
+    # pdb.set_trace()
     # Blank is the last item.
     if blank_posi == len(question_ids) + 1:
         if FLAGS.direction == -1:
@@ -136,7 +138,7 @@ def run_question_inference(sess, question, test_ids, test_feat,
             fetches=["lstm/f_state:0", "f_logits/f_logits/BiasAdd:0"],
             feed_dict={"lstm/f_input_feed:0": input_feed,
                        "lstm/f_state_feed:0": zero_state})
-
+        # pdb.set_trace()
         for step in range(blank_posi - 2):
             input_feed = np.reshape(test_rnn_feat[question_ids[step + 1]], [1, -1])
             [lstm_state, lstm_output] = sess.run(
@@ -172,7 +174,7 @@ def run_question_inference(sess, question, test_ids, test_feat,
             rnn_score = f_softmax / np.sum(f_softmax)
         else:
             rnn_score = b_softmax / np.sum(b_softmax)
-
+    # pdb.set_trace()
     predicted_answer = np.argsort(-rnn_score)[0]
     return rnn_score, predicted_answer
 
@@ -189,6 +191,8 @@ def MRR_HR(array, HR_ks=(1, 3, 5)):
     return MRR, HR
 
 def main(_):
+    sess_config = tf.ConfigProto()
+    sess_config.gpu_options.allow_growth = True
     HR_ks = (1,5,10,20,30,40,50,60,70,80,90,100,150,200)
 
     # Build the inference graph.
@@ -217,13 +221,14 @@ def main(_):
         saver = tf.train.Saver()
 
         g.finalize()
-        with tf.Session() as sess:
+        with tf.Session(config=sess_config) as sess:
             saver.restore(sess, FLAGS.checkpoint_path)
             questions = json.load(open(FLAGS.json_file))
 
             all_pred = []
             set_ids = []
             all_scores = []
+            print("====> test set: %d" % (len(questions)))
             for question in questions:
                 score, pred = run_question_inference(sess, question, test_ids,
                                                      test_feat, test_rnn_feat,
@@ -237,7 +242,8 @@ def main(_):
                     #     if 0 in pred[:i + 1]:
                     #         true_pred[i] += 1
 
-            res_metrics = MRR_HR(np.concatenate(all_scores, axis=0), HR_ks=HR_ks)
+            # pdb.set_trace()
+            res_metrics = MRR_HR(np.vstack(all_scores), HR_ks=HR_ks)
 
             print("MRR:{:.3f} \t".format(res_metrics[0]))
             for idx, kk in enumerate(HR_ks):

@@ -10,19 +10,11 @@ CHECKPOINT_DIR=$3
 test_logs=test_results/${WHICH_SPLIT}/logs
 test_results_file=test_results/${WHICH_SPLIT}
 
-mkdir -p test_logs
+mkdir -p ${test_logs}
 CUDA_VISIBLE_DEVICES=${gpuid} python -u polyvore/fashion_compatibility.py \
   --checkpoint_path=${CHECKPOINT_DIR} \
-  --json_file data/benchmark_dataset/label/${WHICH_SPLIT}/fashion_compatibility_prediction.json \
+  --label_file data/benchmark_dataset/label/${WHICH_SPLIT}/fashion_compatibility_prediction.txt \
   --feature_file data/features/${WHICH_SPLIT}/test_features.pkl \
   --rnn_type="lstm" \
   --direction="2" \
   --result_file ${test_results_file}/fashion_compatibility.pkl | tee ${test_logs}/auc.log
-
-
-
-
-
-
-
-
