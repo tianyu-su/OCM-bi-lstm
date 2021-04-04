@@ -47,7 +47,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 def main(unused_argv):
     sess_config = tf.ConfigProto()
-    # sess_config.gpu_options.allow_growth = True
+    sess_config.gpu_options.allow_growth = True
 
     assert FLAGS.input_file_pattern, "--input_file_pattern is required"
     assert FLAGS.train_dir, "--train_dir is required"

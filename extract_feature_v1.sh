@@ -1,5 +1,7 @@
 #!/bin/bash
-CHECKPOINT_DIR="model/bi_lstm/train/model.ckpt-37967"
+# CHECKPOINT_DIR="model/bi_lstm/train/model.ckpt-37967"
+CHECKPOINT_DIR="model/bi_lstm/train/model.ckpt-40468"
+
 
 CUDA_VISIBLE_DEVICES=1 python -u polyvore/run_inference.py \
   --checkpoint_path=${CHECKPOINT_DIR} \
@@ -10,14 +12,14 @@ CUDA_VISIBLE_DEVICES=1 python -u polyvore/run_inference.py \
 
 
 
-CHECKPOINT_DIR="model/bi_lstm_novse/train/model.ckpt-34142"
-
-CUDA_VISIBLE_DEVICES=1 python -u polyvore/run_inference.py \
-  --checkpoint_path=${CHECKPOINT_DIR} \
-  --json_file="data/label/test_no_dup.json" \
-  --image_dir="data/images/" \
-  --feature_file="data/features/test_features_novse.pkl" \
-  --rnn_type="lstm"
+# CHECKPOINT_DIR="model/bi_lstm_novse/train/model.ckpt-34142"
+#
+# CUDA_VISIBLE_DEVICES=1 python -u polyvore/run_inference.py \
+#   --checkpoint_path=${CHECKPOINT_DIR} \
+#   --json_file="data/label/test_no_dup.json" \
+#   --image_dir="data/images/" \
+#   --feature_file="data/features/test_features_novse.pkl" \
+#   --rnn_type="lstm"
 
 
 
