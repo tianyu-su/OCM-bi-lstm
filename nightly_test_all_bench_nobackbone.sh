@@ -1,12 +1,14 @@
 #!/bin/bash
-# $1 gpuid  $2 which_split  $3 model_path
+# $1 gpuid  $2 workdir  $3 model_path
 
 if [ $# -eq 0 ];
 then
-    echo "gpuid param required"
+    echo "$1 gpuid param required"
+    echo "$2 change workdir required"
     exit
 fi
 
+cd $2
 gpuid=$1
 NOW_DATE=$(date "+%Y%m%d-%H%M%S")
 

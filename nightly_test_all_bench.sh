@@ -3,10 +3,12 @@
 
 if [ $# -eq 0 ];
 then
-    echo "gpuid param required"
+    echo "$1 gpuid param required"
+    echo "$2 change workdir required"
     exit
 fi
 
+cd $2
 gpuid=$1
 NOW_DATE=$(date "+%Y%m%d-%H%M%S")
 

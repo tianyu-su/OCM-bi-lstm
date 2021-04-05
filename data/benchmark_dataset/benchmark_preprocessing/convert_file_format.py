@@ -111,6 +111,19 @@ def convert_raw_file():
 
 
 def convert_test_jobs():
+    def rerange_question_sample(one):
+        inner_setid=one["question"][0].split("_")[0]
+        inner_blk_pos=one['blank_position']
+        inner_ans=one["answers"]
+        inner_right_setididx="{}_{}".format(inner_setid,inner_blk_pos)
+        inner_ans.remove(inner_right_setididx)
+        inner_ans.insert(0,inner_right_setididx)
+        assert one["answers"][0]==inner_right_setididx
+        assert len(one["answers"])==4
+        return one
+
+
+
     # filter <=8
     with open(output_cp, 'w') as fp_cp:
         with open(compatibility_file) as fp:
@@ -129,7 +142,7 @@ def convert_test_jobs():
             fitb = json.load(fp)
             for one in fitb:
                 if len(one["question"]) < 8:
-                    res_fitb.append(one)
+                    res_fitb.append(rerange_question_sample(one))
 
         json.dump(res_fitb, fp_fitb)
 
@@ -152,12 +165,9 @@ def convert_test_jobs():
             items = []
             for it in one["items"]:
                 item_id = it["item_id"]
-                # new_setid, new_item_idx = old_2_new_setid_mapping["{}_{}".format(set_id, it["index"])].split("_")
-                # assert new_setid == set_id
                 items.append(
                     {"index": it["index"], "item_id": item_id, "categoryid": meta_json[item_id]["category_id"],
-                     # "name": meta_json[item_id]['title'] or meta_json[item_id]['url_name']}
-                     "name": random.choice(all_sentences)}
+                     "name": ""}
                 )
 
             converted["items"] = items
@@ -185,6 +195,6 @@ def convert_test_jobs():
 
 if __name__ == '__main__':
     # convert_raw_file()
-    # convert_test_jobs()
+    convert_test_jobs()
     # squeeze_benchmark_idx()
     # generate_benchmark_setid2imid()
