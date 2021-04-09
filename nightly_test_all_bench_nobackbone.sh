@@ -1,19 +1,22 @@
 #!/bin/bash
 # $1 gpuid  $2 workdir  $3 model_path
 
-if [ $# -eq 0 ];
+if [ $# -ne 2 ];
 then
     echo "$1 gpuid param required"
     echo "$2 change workdir required"
     exit
 fi
 
-cd $2
+pushd $2
 gpuid=$1
 NOW_DATE=$(date "+%Y%m%d-%H%M%S")
+# MODLE_DIT_NAME="bi_lstm_bench_novse_nobackbone"
+MODLE_DIT_NAME="bi_lstm_bench_novse_nobackbone_re45"
+ADD_PREFIX="re45_"
 
 echo "=====> fetch latest checkpoint version number <======"
-REMOTE_DIR="yaoguangan@yga.tb.xpick.cn:/home/share/yaoguangan/benpao/buchongle/baselines/2017MMbilstm/model/bi_lstm_bench_novse_nobackbone"
+REMOTE_DIR="yaoguangan@yga.tb.xpick.cn:/home/share/yaoguangan/benpao/buchongle/baselines/2017MMbilstm/model/${MODLE_DIT_NAME}"
 scp ${REMOTE_DIR}/nondisjoint/train/checkpoint tmp_non_checkpoint
 scp ${REMOTE_DIR}/disjoint/train/checkpoint tmp_dis_checkpoint
 NON_CHECKPOINT_NAME=`echo $(head -n 1  tmp_non_checkpoint | awk -F '[:]' '{print $NF}') | sed 's/.\(.*\)/\1/' | sed 's/\(.*\)./\1/'`
@@ -27,7 +30,7 @@ echo "disjoint VER: ${DIS_CHECKPOINT_NAME}"
 # DIS_CHECKPOINT_NAME="model.ckpt-23226"
 
 echo "=====> fetch latest checkpoint bin <======"
-test_ckpt_dir=model/bi_lstm_bench_novse_nobackbone/night_test_ckpt/${NOW_DATE}
+test_ckpt_dir=model/${MODLE_DIT_NAME}/night_test_ckpt/${NOW_DATE}
 
 mkdir -p ${test_ckpt_dir}/nondisjoint
 mkdir -p ${test_ckpt_dir}/disjoint
@@ -38,8 +41,9 @@ DIS_CHECKPOINT_DIR=${test_ckpt_dir}/disjoint/${DIS_CHECKPOINT_NAME}
 scp ${REMOTE_DIR}/nondisjoint/train/${NON_CHECKPOINT_NAME}* ${test_ckpt_dir}/nondisjoint/
 scp ${REMOTE_DIR}/disjoint/train/${DIS_CHECKPOINT_NAME}* ${test_ckpt_dir}/disjoint
 
-NON_PARAM="${1} nondisjoint ${NON_CHECKPOINT_DIR} nobackbone_${NOW_DATE}"
-DIS_PARAM="${1} disjoint ${DIS_CHECKPOINT_DIR} nobackbone_${NOW_DATE}"
+# log name
+NON_PARAM="${1} nondisjoint ${NON_CHECKPOINT_DIR} ${ADD_PREFIX}nobackbone_${NOW_DATE}"
+DIS_PARAM="${1} disjoint ${DIS_CHECKPOINT_DIR} ${ADD_PREFIX}nobackbone_${NOW_DATE}"
 
 # echo ${test_ckpt_dir}/nondisjoint
 # echo ${test_ckpt_dir}/disjoint

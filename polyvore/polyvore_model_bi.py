@@ -180,7 +180,8 @@ class PolyvoreModel(object):
 
       # No target sequences or input mask in inference mode.
       input_mask = tf.placeholder(dtype=tf.int64,
-                                  shape=[1, 8],  # batch_size
+                                  # shape=[1, 8],  # batch_size
+                                  shape=[1, self.config.number_set_images],  # batch_size
                                   name="input_mask")
       cap_mask = None
       loss_mask = None

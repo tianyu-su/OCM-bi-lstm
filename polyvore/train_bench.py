@@ -41,6 +41,7 @@ tf.flags.DEFINE_integer("log_every_n_steps", 1,
 # update 2021.4.2
 tf.flags.DEFINE_float("emb_loss_factor", 1.0, "weight of vse")
 tf.flags.DEFINE_integer("batch_size", 10, "batch size of training steps.")
+tf.flags.DEFINE_integer("max_outfit_length", 8, "max size of training dataset.")
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
@@ -59,6 +60,7 @@ def main(unused_argv):
     # update 2021.4.2
     model_config.emb_loss_factor = FLAGS.emb_loss_factor
     model_config.batch_size = FLAGS.batch_size
+    model_config.number_set_images = FLAGS.max_outfit_length
 
     training_config = configuration.TrainingConfig()
     now_trining_split = "default"
